@@ -42,3 +42,10 @@
     owner: vagrant
     group: vagrant
   listen: starting kubernetes
+
+- name: fetch join_command to ansible manager
+  fetch:
+    src: /home/vagrant/.kube/join_command
+    dest: /tmp/join_command
+    flat: yes
+  listen: starting kubernetes

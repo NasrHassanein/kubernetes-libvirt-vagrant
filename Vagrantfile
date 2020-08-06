@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
         :libvirt__domain_name => "kube.local"
       node.vm.hostname = "node-#{i}"
       node.vm.provision "ansible" do |ansible|
-        ansible.playbook = "kubernetes-setup/node-playbook.yml"
+        ansible.playbook = "ansible-roles/worker-playbook.yml"
         ansible.extra_vars = {
             node_ip: "192.168.100.#{i + 10}",
         }
