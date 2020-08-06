@@ -1,0 +1,44 @@
+---
+- name: starting and enabling docker
+  systemd:
+    name: docker
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+  listen: starting docker
+
+- name: starting and enabling kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+  listen: starting kubernetes
+
+- name: initialize the Kubernetes cluster using kubeadm
+  command: kubeadm init --apiserver-advertise-address="192.168.100.10" --apiserver-cert-extra-sans="192.168.100.10"  --node-name k8s-master --pod-network-cidr=10.10.0.0/16
+  listen: starting kubernetes
+
+- name: copy kubeconfig file to vagrant user
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/vagrant/.kube/config
+    remote_src: yes
+    mode: '0644'
+    owner: vagrant
+    group: vagrant
+  listen: starting kubernetes
+
+- name: generate join command
+  command: kubeadm token create --print-join-command
+  register: join_command
+  listen: starting kubernetes
+
+- name: create join command file on master node
+  copy:
+    content: "{{ join_command.stdout_lines[0] }}"
+    dest: /home/vagrant/.kube/join_command
+    mode: '0644'
+    owner: vagrant
+    group: vagrant
+  listen: starting kubernetes
