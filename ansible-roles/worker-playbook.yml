@@ -1,0 +1,7 @@
+---
+- name: kubernetes worker playbook
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - kubernetes-worker

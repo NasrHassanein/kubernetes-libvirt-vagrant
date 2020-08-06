@@ -1,0 +1,20 @@
+---
+- name: starting and enabling docker
+  systemd:
+    name: docker
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+  listen: starting docker
+
+- name: starting and enabling kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+  listen: starting kubernetes
+
+- name: join the node to cluster
+  command: bash /tmp/join-command.sh
+  listen: join cluster
