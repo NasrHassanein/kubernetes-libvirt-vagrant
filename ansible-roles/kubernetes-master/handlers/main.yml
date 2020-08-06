@@ -16,7 +16,7 @@
   listen: starting kubernetes
 
 - name: initialize the Kubernetes cluster using kubeadm
-  command: kubeadm init --apiserver-advertise-address="192.168.100.10" --apiserver-cert-extra-sans="192.168.100.10"  --node-name k8s-master --pod-network-cidr=10.10.0.0/16
+  command: kubeadm init --apiserver-advertise-address="192.168.100.10" --apiserver-cert-extra-sans="192.168.100.10"  --node-name k8s-master --pod-network-cidr=10.244.0.0/16
   listen: starting kubernetes
 
 - name: copy kubeconfig file to vagrant user
@@ -27,6 +27,13 @@
     mode: '0644'
     owner: vagrant
     group: vagrant
+  listen: starting kubernetes
+
+- name: fetch kubeconfig file to host machine
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: /tmp/vagrant-kubeconfig
+    flat: yes
   listen: starting kubernetes
 
 - name: generate join command
