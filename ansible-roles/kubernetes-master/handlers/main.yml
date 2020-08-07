@@ -19,6 +19,10 @@
   command: kubeadm init --apiserver-advertise-address="192.168.100.10" --apiserver-cert-extra-sans="192.168.100.10"  --node-name k8s-master --pod-network-cidr=10.244.0.0/16
   listen: starting kubernetes
 
+- name: deploy kubernetes dashboard
+  command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+  listen: starting kubernetes
+
 - name: copy kubeconfig file to vagrant user
   copy:
     src: /etc/kubernetes/admin.conf
