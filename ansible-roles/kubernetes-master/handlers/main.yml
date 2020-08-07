@@ -36,14 +36,6 @@
     flat: yes
   listen: starting kubernetes
 
-- name: deploy kubernetes dashboard
-  command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
-  listen: starting kubernetes
-
-- name: deploy flannel network fabric
-  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-  listen: starting kubernetes
-
 - name: generate join command
   command: kubeadm token create --print-join-command
   register: join_command
@@ -63,4 +55,12 @@
     src: /home/vagrant/.kube/join_command
     dest: /tmp/join_command
     flat: yes
+  listen: starting kubernetes
+
+- name: deploy flannel network fabric
+  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  listen: starting kubernetes
+
+- name: deploy kubernetes dashboard
+  command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
   listen: starting kubernetes
