@@ -57,17 +57,12 @@
     flat: yes
   listen: starting kubernetes
 
-- name: wait for kubernetes to start on port 8080
-  wait_for:
-    host: 127.0.0.1
-    port: 8080
-    delay: 10
-  listen: starting kubernetes
-
 - name: deploy flannel network fabric
+  become: false
   command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
   listen: starting kubernetes
 
 - name: deploy kubernetes dashboard
+  become: false
   command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
   listen: starting kubernetes
